@@ -124,7 +124,7 @@ export default function Home() {
     <main className="h-screen overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-50 relative">
       {message && (
         <div 
-          className={`fixed top-4 right-4 z-50 p-3 rounded-lg border shadow-lg text-sm font-medium transition-all duration-300 animate-in slide-in-from-top-2 ${
+          className={`fixed bottom-4 left-4 z-50 p-3 rounded-lg border shadow-lg text-sm font-medium transition-all duration-300 animate-in slide-in-from-bottom-2 ${
             message.type === 'success' 
               ? 'bg-green-50 border-green-200 text-green-800' 
               : 'bg-red-50 border-red-200 text-red-800'
