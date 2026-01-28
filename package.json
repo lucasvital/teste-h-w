@@ -1,0 +1,28 @@
+{
+  "name": "n8n-integration-fullstack",
+  "version": "1.0.0",
+  "description": "Aplicação fullstack com Next.js, Node.js, N8N e PostgreSQL",
+  "scripts": {
+    "install:all": "cd backend && npm install && cd ../frontend && npm install",
+    "dev:backend": "cd backend && npm start",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "build:frontend": "cd frontend && npm run build",
+    "test:backend": "curl http://localhost:3001/health",
+    "clean": "rm -rf backend/node_modules frontend/node_modules backend/package-lock.json frontend/package-lock.json"
+  },
+  "keywords": [
+    "n8n",
+    "nextjs",
+    "nodejs",
+    "postgresql",
+    "fullstack",
+    "aes-256-gcm"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
+
