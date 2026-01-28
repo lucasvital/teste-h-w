@@ -75,3 +75,17 @@
   }
 }
 
+@layer utilities {
+  .bg-page-pattern {
+    background-color: hsl(210 40% 98%);
+    background-image: radial-gradient(
+        hsl(var(--muted-foreground) / 0.08) 1px,
+        transparent 1px
+      );
+    background-size: 20px 20px;
+  }
+  .dark .bg-page-pattern {
+    background-color: hsl(var(--background));
+  }
+}
+

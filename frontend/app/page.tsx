@@ -12,9 +12,11 @@ import {
   PaginationNext,
 } from '@/components/ui/pagination'
 import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { getUsers, executeFlow, clearData, type User } from '@/lib/api'
+import { ThemeToggle } from '@/components/theme-toggle'
 import { Inbox, Loader2, Play, Trash2 } from 'lucide-react'
 
 let initialLoadStarted = false
@@ -98,25 +100,30 @@ export default function Home() {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
-    <main className="h-screen overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-50 relative">
+    <main className="h-screen overflow-hidden bg-page-pattern relative">
       <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4 max-w-7xl h-full flex flex-col">
-        
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3 gap-2 sm:gap-0 flex-shrink-0">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3 gap-2 sm:gap-0 flex-shrink-0 border-b border-border pb-3">
           <div>
-            <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">
-              Teste FullStack - Lucas Vital
-            </h1>
+            <div className="flex items-center gap-2 flex-wrap">
+              <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">
+                Teste FullStack - Lucas Vital
+              </h1>
+              {users.length > 0 && (
+                <Badge variant="secondary">{users.length} registros</Badge>
+              )}
+            </div>
             <p className="text-xs text-muted-foreground mt-0.5">
               Dashboard de dados
             </p>
           </div>
           
-          <div className="flex gap-2 sm:gap-3 w-full sm:w-auto">
+          <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
+            <ThemeToggle />
             <Button
               onClick={handleExecute}
               disabled={loading || clearing}
               variant="default"
-              className="flex-1 sm:flex-none px-4 sm:px-6 shadow-sm text-sm transition-colors"
+              className="flex-1 sm:flex-none px-4 sm:px-6 shadow-sm text-sm transition-colors transition-transform hover:scale-[1.02] active:scale-[0.98]"
               size="default"
             >
               {loading ? (
@@ -137,7 +144,7 @@ export default function Home() {
               onClick={handleClear}
               disabled={loading || clearing}
               variant="outline"
-              className="flex-1 sm:flex-none px-4 sm:px-6 shadow-sm text-sm transition-colors border-destructive/50 text-destructive hover:bg-destructive/10 hover:border-destructive/70"
+              className="flex-1 sm:flex-none px-4 sm:px-6 shadow-sm text-sm transition-colors transition-transform hover:scale-[1.02] active:scale-[0.98] border-destructive/50 text-destructive hover:bg-destructive/10 hover:border-destructive/70"
               size="default"
             >
               {clearing ? (
@@ -156,7 +163,7 @@ export default function Home() {
           </div>
         </div>
 
-        <Card className="overflow-x-auto flex-shrink-0 rounded-lg border-border shadow-sm">
+        <Card className="overflow-x-auto flex-shrink-0 rounded-xl border-border shadow-sm transition-shadow hover:shadow-md">
           <CardContent className="p-0">
             {initialLoading ? (
               <div className="w-full">
@@ -182,16 +189,16 @@ export default function Home() {
             <Table>
               <TableHeader>
                 <TableRow className="hover:bg-transparent border-b border-border bg-muted/50">
-                  <TableHead className="w-16 sm:w-20 font-semibold text-muted-foreground h-9 sm:h-10 text-xs sm:text-sm py-2">
+                  <TableHead className="w-16 sm:w-20 font-semibold text-muted-foreground tracking-tight h-9 sm:h-10 text-xs sm:text-sm py-2">
                     ID
                   </TableHead>
-                  <TableHead className="font-semibold text-muted-foreground h-9 sm:h-10 text-xs sm:text-sm py-2">
+                  <TableHead className="font-semibold text-muted-foreground tracking-tight h-9 sm:h-10 text-xs sm:text-sm py-2">
                     Nome
                   </TableHead>
-                  <TableHead className="hidden md:table-cell font-semibold text-muted-foreground h-9 sm:h-10 text-xs sm:text-sm py-2">
+                  <TableHead className="hidden md:table-cell font-semibold text-muted-foreground tracking-tight h-9 sm:h-10 text-xs sm:text-sm py-2">
                     Email
                   </TableHead>
-                  <TableHead className="font-semibold text-muted-foreground h-9 sm:h-10 text-xs sm:text-sm py-2">
+                  <TableHead className="font-semibold text-muted-foreground tracking-tight h-9 sm:h-10 text-xs sm:text-sm py-2">
                     Telefone
                   </TableHead>
                 </TableRow>
@@ -199,10 +206,10 @@ export default function Home() {
               <TableBody>
                 {users.length > 0 ? (
                   <>
-                    {currentUsers.map((user) => (
+                    {currentUsers.map((user, i) => (
                       <TableRow
                         key={user.id}
-                        className="hover:bg-muted/50 transition-colors h-9 sm:h-10 border-border"
+                        className={`hover:bg-muted/50 transition-colors h-9 sm:h-10 border-border ${i % 2 === 1 ? 'bg-muted/30' : ''}`}
                       >
                         <TableCell className="font-medium text-foreground text-xs sm:text-sm py-2">
                           {user.id}
@@ -221,10 +228,10 @@ export default function Home() {
                     {currentUsers.length < usersPerPage &&
                       Array.from({
                         length: usersPerPage - currentUsers.length,
-                      }).map((_, i) => (
+                      }).map((_, j) => (
                         <TableRow
-                          key={`empty-${i}`}
-                          className="h-9 sm:h-10 border-border"
+                          key={`empty-${j}`}
+                          className={`h-9 sm:h-10 border-border ${(currentUsers.length + j) % 2 === 1 ? 'bg-muted/30' : ''}`}
                         >
                           <TableCell
                             colSpan={4}
@@ -248,7 +255,7 @@ export default function Home() {
                       ))}
                   </>
                 ) : (
-                <TableRow className="h-[320px] sm:h-[360px] border-border">
+                <TableRow className="h-[320px] sm:h-[360px] border-border bg-muted/20">
                   <TableCell colSpan={4} className="text-center md:hidden p-0"></TableCell>
                   <TableCell colSpan={4} className="hidden md:table-cell text-center p-0 align-middle">
                     <div className="flex flex-col items-center justify-center py-10">
