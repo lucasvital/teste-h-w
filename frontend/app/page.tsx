@@ -105,6 +105,15 @@ export default function Home() {
     setTotalPages(calculatedPages);
   }, [users]);
 
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => {
+        setMessage(null);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
+
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
@@ -112,15 +121,27 @@ export default function Home() {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
-    <main className="h-screen overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-50">
-      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 max-w-7xl h-full flex flex-col">
+    <main className="h-screen overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-50 relative">
+      {message && (
+        <div 
+          className={`fixed top-4 right-4 z-50 p-3 rounded-lg border shadow-lg text-sm font-medium transition-all duration-300 animate-in slide-in-from-top-2 ${
+            message.type === 'success' 
+              ? 'bg-green-50 border-green-200 text-green-800' 
+              : 'bg-red-50 border-red-200 text-red-800'
+          }`}
+        >
+          {message.text}
+        </div>
+      )}
+
+      <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4 max-w-7xl h-full flex flex-col">
         
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-3 sm:gap-0 flex-shrink-0">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3 gap-2 sm:gap-0 flex-shrink-0">
           <div>
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
+            <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">
               Teste FullStack - Lucas Vital
             </h1>
-            <p className="text-xs sm:text-sm text-gray-600 mt-1">
+            <p className="text-xs text-gray-600 mt-0.5">
               Dashboard de dados
             </p>
           </div>
@@ -169,41 +190,29 @@ export default function Home() {
           </div>
         </div>
 
-        {message && (
-          <div 
-            className={`mb-3 sm:mb-4 p-2 sm:p-3 rounded-lg border text-xs sm:text-sm font-medium transition-all duration-300 flex-shrink-0 ${
-              message.type === 'success' 
-                ? 'bg-green-50 border-green-200 text-green-800' 
-                : 'bg-red-50 border-red-200 text-red-800'
-            }`}
-          >
-            {message.text}
-          </div>
-        )}
-
         <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-x-auto flex-shrink-0">
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent border-b bg-gray-50">
-                <TableHead className="w-16 sm:w-24 font-semibold text-gray-700 h-10 sm:h-12 text-xs sm:text-sm">ID</TableHead>
-                <TableHead className="font-semibold text-gray-700 h-10 sm:h-12 text-xs sm:text-sm">Nome</TableHead>
-                <TableHead className="hidden md:table-cell font-semibold text-gray-700 h-10 sm:h-12 text-xs sm:text-sm">Email</TableHead>
-                <TableHead className="font-semibold text-gray-700 h-10 sm:h-12 text-xs sm:text-sm">Telefone</TableHead>
+                <TableHead className="w-16 sm:w-20 font-semibold text-gray-700 h-9 sm:h-10 text-xs sm:text-sm py-2">ID</TableHead>
+                <TableHead className="font-semibold text-gray-700 h-9 sm:h-10 text-xs sm:text-sm py-2">Nome</TableHead>
+                <TableHead className="hidden md:table-cell font-semibold text-gray-700 h-9 sm:h-10 text-xs sm:text-sm py-2">Email</TableHead>
+                <TableHead className="font-semibold text-gray-700 h-9 sm:h-10 text-xs sm:text-sm py-2">Telefone</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {users.length > 0 ? (
                 <>
                   {currentUsers.map((user) => (
-                    <TableRow key={user.id} className="hover:bg-gray-50 transition-colors h-10 sm:h-12">
-                      <TableCell className="font-medium text-gray-900 text-xs sm:text-sm">{user.id}</TableCell>
-                      <TableCell className="text-gray-800 text-xs sm:text-sm">{user.name}</TableCell>
-                      <TableCell className="hidden md:table-cell text-gray-600 text-xs sm:text-sm">{user.email}</TableCell>
-                      <TableCell className="text-gray-600 text-xs sm:text-sm">{user.phone}</TableCell>
+                    <TableRow key={user.id} className="hover:bg-gray-50 transition-colors h-9 sm:h-10">
+                      <TableCell className="font-medium text-gray-900 text-xs sm:text-sm py-2">{user.id}</TableCell>
+                      <TableCell className="text-gray-800 text-xs sm:text-sm py-2">{user.name}</TableCell>
+                      <TableCell className="hidden md:table-cell text-gray-600 text-xs sm:text-sm py-2">{user.email}</TableCell>
+                      <TableCell className="text-gray-600 text-xs sm:text-sm py-2">{user.phone}</TableCell>
                     </TableRow>
                   ))}
                   {currentUsers.length < usersPerPage && Array.from({ length: usersPerPage - currentUsers.length }).map((_, i) => (
-                    <TableRow key={`empty-${i}`} className="h-10 sm:h-12">
+                    <TableRow key={`empty-${i}`} className="h-9 sm:h-10">
                       <TableCell colSpan={4} className="text-transparent md:hidden">-</TableCell>
                       <TableCell className="hidden md:table-cell text-transparent">-</TableCell>
                       <TableCell className="hidden md:table-cell text-transparent">-</TableCell>
@@ -213,7 +222,7 @@ export default function Home() {
                   ))}
                 </>
               ) : (
-                <TableRow className="h-[400px] sm:h-[480px]">
+                <TableRow className="h-[360px] sm:h-[400px]">
                   <TableCell colSpan={4} className="text-center md:hidden"></TableCell>
                   <TableCell colSpan={4} className="hidden md:table-cell text-center">
                     <div className="flex flex-col items-center justify-center py-12">
@@ -232,22 +241,19 @@ export default function Home() {
           </Table>
         </div>
 
-        <div className="flex-1"></div>
-
-        {totalPages > 1 && users.length > 0 && (
-          <div className="flex justify-center items-center gap-1 sm:gap-2 mt-4 sm:mt-6 flex-shrink-0">
+        {users.length > 0 && (
+          <div className="flex justify-center items-center gap-1 sm:gap-2 mt-3 sm:mt-4 flex-shrink-0">
             <Button
               variant="outline"
               size="sm"
               onClick={() => paginate(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="border-gray-300 hover:bg-gray-100 px-2 sm:px-4 text-xs sm:text-sm"
+              disabled={currentPage === 1 || totalPages <= 1}
+              className="border-gray-300 hover:bg-gray-100 px-4 text-sm"
             >
-              <span className="hidden sm:inline">PREVIOUS</span>
-              <span className="sm:hidden">PREV</span>
+              PREVIOUS
             </Button>
             
-            {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+            {totalPages > 1 && Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
               const maxVisible = 5;
               let pageNum;
               if (totalPages <= maxVisible) {
@@ -280,8 +286,8 @@ export default function Home() {
               variant="outline"
               size="sm"
               onClick={() => paginate(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className="border-gray-300 hover:bg-gray-100 px-2 sm:px-4 text-xs sm:text-sm"
+              disabled={currentPage === totalPages || totalPages <= 1}
+              className="border-gray-300 hover:bg-gray-100 px-4 text-sm"
             >
               NEXT
             </Button>
