@@ -1,5 +1,7 @@
 Teste técnico H&W
 
+### Observação: O backend está hospedado no Render, por conta disso o primeiro acesso vai ligar o backend, pode demorar um pouco na primeira vez por esse motivo, mas após ele vai estar rodando normalmente.
+
 Comecei consultado o endpoint da API no Insomnia para entender como era retornada a resposta da consulta, baseado nisso comecei a planejar o plano para descriptografar os dados usando a biblioteca Crypto, usei os dados retornados em hexadecimal transformando os mesmos em buffer, pois o crypto precisa processar eles em bytes. Feito isso consegui sucesso.
 
 A partir deste ponto tratei a resposta enviando para meu N8N, onde eu recebi os dados, usei um node code para normalizar e transformar em array e subi para o Postgres.
