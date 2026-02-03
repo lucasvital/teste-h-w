@@ -8,7 +8,7 @@ A partir deste ponto tratei a resposta enviando para meu N8N, onde eu recebi os 
 
 Tratamento de erro: quando o usuário tenta executar com dados na tabela, o banco de dados que tem uma regra de UNIQUE no email, retorna erro, no N8N eu configurei para retornar o erro para o backend e tratar informando ao usuário o processo correto para execução do mesmo.
 
-O frontend fiz uma tabela responsiva, qu e ao carregar a página consulta o endpoint da API na rota GET, que da um SELECT em todos ids, preenchendo a tabela.
+O frontend fiz uma tabela responsiva, que ao carregar a página consulta o endpoint da API na rota GET, que da um SELECT em todos ids, preenchendo a tabela.
 
 
 Dark mode usando next-themes
